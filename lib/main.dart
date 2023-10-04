@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:badges/badges.dart' as badges;
+
 import 'signup.dart';
 import 'enter_method.dart';
+import 'shared_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -58,216 +59,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SharedAppBar extends StatelessWidget {
-  SharedAppBar({super.key});
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _cityController = TextEditingController();
-  final TextEditingController _streetController = TextEditingController();
-  final TextEditingController _zipController = TextEditingController();
-
-  void _handleLogoClick(BuildContext context) {
-    Navigator.pop(context);
-    Navigator.pushNamed(context, '/home');
-  }
-
-  void _submitForm()
-  {
-    if (_formKey.currentState!.validate()) {
-      // Form is valid, handle the submission here
-      String name = _nameController.text;
-      String email = _emailController.text;
-      String password = _passwordController.text;
-      String phone = _phoneController.text;
-      String city = _cityController.text;
-      String street = _streetController.text;
-      String zip = _zipController.text;
-
-      // Perform your submission logic here
-      print('Name: $name');
-      print('Email: $email');
-    }
-  }
-
-  void _handleSignInUp(BuildContext context, bool emailOrPhone) {
-    // Navigator.pop(context);
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            icon: Image.asset(
-              'images/hijabi.png',
-              width: 100,
-              height: 100,
-            ),
-            scrollable: true,
-            title: const Center(
-                child: Text("تسجيل الدخول")
-            ),
-            content: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Directionality(
-                textDirection: TextDirection.rtl,
-                child: Form(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TextFormField(
-                        keyboardType: TextInputType.name,
-                        decoration: const InputDecoration(
-                          labelText: "الإسم",
-                          icon: Icon(Icons.account_box),
-                        ),
-                      ),
-                      if (emailOrPhone)
-                        TextFormField(
-                          textDirection: TextDirection.ltr,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
-                            labelText: "البريد الإلكتروني",
-                            hintText: 'your@email.com',
-                            icon: Icon(Icons.email),
-                          ),
-                        ),
-                      if (!emailOrPhone) // false for phone
-                        TextFormField(
-                          textDirection: TextDirection.ltr,
-                          keyboardType: TextInputType.phone,
-                            decoration: const InputDecoration(
-                              labelText: "رقم الهاتف",
-                              // hintText: 'your@email.com',
-                              icon: Icon(Icons.phone),
-                            ),
-                        ),
-                      TextFormField(
-                        textDirection: TextDirection.ltr,
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: "كلمة السر",
-                          hintText: 'كلمة السر مكونة من 8 خانات على الأقل',
-                          icon: Icon(Icons.message),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            actions: [
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text("تسجيل الدخول")
-              )
-            ],
-          );
-        }
-    );
-  }
-
-  void _handleProfileClick(BuildContext context){
-    // TODO - make the "sign in / up" thing, and profile page
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            icon: Image.asset(
-              'images/hijabi.png',
-              // fit: BoxFit.fill,
-              width: 100,
-              height: 100,
-            ),
-            scrollable: true,
-            title: const Center(
-                child: Text("تسجيل الدخول"),
-            ),
-            content: Column(
-              children: [
-                const Divider(),
-                const Text("اختاري طريقة الدخول"),
-                const SizedBox(height: 30,),
-                Row(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => _handleSignInUp(context, true),
-                      child: const Text("البريد الإلكتروني"),
-                    ),
-                    SizedBox(
-                      width: 140,
-                      child: ElevatedButton(
-                        onPressed: () => _handleSignInUp(context, false),
-                        child: const Text("رقم الهاتف"),
-                      ),
-                    )
-                  ],
-                )
-              ]
-            )
-          );
-        }
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        IconButton(
-          hoverColor: const Color(0xFFFEF9F6),
-          highlightColor: const Color(0xFFFEF9F6),
-          onPressed: () => _handleLogoClick(context),
-          icon: Image.asset(
-            'images/logo.jpg',
-            fit: BoxFit.fill,
-            width: 100,
-            height: 100,
-          ),
-        ),
-        Positioned(
-          right: 50,
-          child: IconButton(
-            icon: const Icon(
-              Icons.person_outline_rounded
-            ),
-            hoverColor: const Color(0xFFF2E4D7),
-            // TODO - make the "profile" thing
-            onPressed: () => _handleProfileClick(context),
-          )
-        ),
-        Positioned(
-          left: 50,
-          child: badges.Badge(
-            badgeStyle: const badges.BadgeStyle(
-                badgeColor: Color(0xFFF2E4D7)
-            ),
-            badgeContent: const Text("0"),
-            child: IconButton(
-              icon: const Icon(
-                Icons.shopping_cart_outlined
-              ),
-              hoverColor: const Color(0xFFF2E4D7),
-              onPressed: () => {},
-            )
-          ),
-        ),
-        const Align(
-          alignment: Alignment.bottomCenter,
-          child: Divider(
-            thickness: 2,
-            color: Color(0xFFFEE9F6),
-          )
-        ),
-      ],
-    );
-  }
-}
-
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -286,7 +77,117 @@ class _MyHomePageState extends State<MyHomePage> {
         preferredSize: const Size.fromHeight(100.0),
         child: SharedAppBar()
       ),
-      // body: ,
+      body: const ShoppingItemsPage(),
     );
   }
 }
+
+class Product {
+  String name = '';
+  String price = '';
+  String imageUrl = '';
+  Product({
+    required String name,
+    required String price,
+    required String imageUrl}){
+    this.name = name;
+    this.price = price;
+    this.imageUrl = imageUrl;
+  }
+
+}
+
+List<Product> products = [
+  Product(name: 'Product 1', price: '\$10', imageUrl: 'images/product1.jpg'),
+  Product(name: 'Product 2', price: '\$15', imageUrl: 'images/product2.jpg'),
+  Product(name: 'Product 3', price: '\$25', imageUrl: 'images/product1.jpg'),
+  Product(name: 'Product 4', price: '\$35', imageUrl: 'images/product2.jpg'),
+  Product(name: 'Product 5', price: '\$10', imageUrl: 'images/product1.jpg'),
+  Product(name: 'Product 6', price: '\$15', imageUrl: 'images/product2.jpg'),
+  Product(name: 'Product 7', price: '\$25', imageUrl: 'images/product1.jpg'),
+  Product(name: 'Product 8', price: '\$35', imageUrl: 'images/product2.jpg'),
+  // Add more products here
+];
+
+
+class ShoppingItemsPage extends StatelessWidget {
+  const ShoppingItemsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(20),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4, // Number of columns in the grid
+          crossAxisSpacing: 20.0, // Spacing between columns
+          mainAxisSpacing: 20.0, // Spacing between rows
+        ),
+        itemCount: products.length,
+        itemBuilder: (context, index) {
+          return _buildItemCard(products[index]);
+        },
+
+      );
+  }
+
+  void _handleCardClick(Product product) {
+    // Implement your click handling logic here
+    print('Clicked on ${product.name}');
+    // You can navigate to a product details page or perform any other action.
+  }
+
+  Widget _buildItemCard(Product product) {
+    return ElevatedButton(
+      onPressed: () {
+        _handleCardClick(product);
+      },
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        ),
+        backgroundColor: const Color(0xFFFEF9F6),
+        elevation: 4,
+        // foregroundColor: const Color(0xFFFEF9F6),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset(
+            product.imageUrl,
+            width: 150.0,
+            height: 150.0,
+            fit: BoxFit.cover,
+          ),
+          // const SizedBox(height: 8.0),
+          Text(
+            product.name,
+            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          ),
+          const Divider(),
+          Text(
+            product.price,
+            style: const TextStyle(fontSize: 14.0),//, color: Colors.grey),
+          ),
+          Row(
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    print("Buy Now");
+                  },
+                  child: const Text("اشتر الآن")
+              ),
+              const SizedBox(width: 100,),
+              IconButton(
+                  onPressed: () {
+                    print("Add To Cart");
+                  },
+                  icon: const Icon(Icons.add_shopping_cart),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+

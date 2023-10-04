@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noor_alfadela_shopping_website/main.dart' as mpage;
+import 'shared_bar.dart';
 
 class EnterMethodPage extends StatefulWidget {
   const EnterMethodPage({super.key, required this.title});
@@ -37,7 +37,7 @@ class _EnterMethodPageState extends State<EnterMethodPage> {
       backgroundColor: const Color(0xFFFEF9F6),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
-        child: mpage.SharedAppBar(),
+        child: SharedAppBar(),
       ),
       body: Stack(
         alignment: Alignment.center,
