@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart' as awesome;
 import 'package:badges/badges.dart' as badges;
 
 
@@ -29,8 +29,8 @@ class _PasswordFieldState extends State<PasswordField> {
         icon: const Icon(Icons.message),
         suffixIcon: IconButton(
           icon: _obscureText
-              ? const Icon(FontAwesomeIcons.eyeSlash)
-              : const Icon(FontAwesomeIcons.eye),
+              ? const Icon(awesome.FontAwesomeIcons.eyeSlash)
+              : const Icon(awesome.FontAwesomeIcons.eye),
           onPressed: _togglePasswordVisibility,
         ),
       ),
@@ -40,9 +40,15 @@ class _PasswordFieldState extends State<PasswordField> {
 }
 
 
-class SharedAppBar extends StatelessWidget {
+class SharedAppBar extends StatefulWidget {
   SharedAppBar({super.key});
 
+  @override
+  State<SharedAppBar> createState() => _SharedAppBarState();
+
+}
+
+class _SharedAppBarState extends State<SharedAppBar> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -52,6 +58,7 @@ class SharedAppBar extends StatelessWidget {
   final TextEditingController _streetController = TextEditingController();
   final TextEditingController _zipController = TextEditingController();
 
+  int cartItems = 0;
 
   void _handleLogoClick(BuildContext context) {
     Navigator.pop(context);
@@ -185,27 +192,36 @@ class SharedAppBar extends StatelessWidget {
     );
   }
 
+  void addToCart() {
+    setState(() {
+      cartItems++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFFFEF9F6),
-        appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(100.0),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                IconButton(
-                  hoverColor: const Color(0xFFFEF9F6),
-                  highlightColor: const Color(0xFFFEF9F6),
-                  onPressed: () => _handleLogoClick(context),
-                  icon: Image.asset(
-                    'images/logo.jpg',
-                    fit: BoxFit.fill,
-                    width: 100,
-                    height: 100,
+      backgroundColor: const Color(0xFFFEF9F6),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100.0),
+        child: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  IconButton(
+                    hoverColor: const Color(0xFFFEF9F6),
+                    highlightColor: const Color(0xFFFEF9F6),
+                    onPressed: () => _handleLogoClick(context),
+                    icon: Image.asset(
+                      'images/logo.jpg',
+                      fit: BoxFit.cover,
+                      width: 90,
+                      height: 90,
+                    ),
                   ),
-                ),
-                Positioned(
+                  Positioned(
                     right: 50,
                     child: IconButton(
                       icon: const Icon(
@@ -215,34 +231,88 @@ class SharedAppBar extends StatelessWidget {
                       // TODO - make the "profile" thing
                       onPressed: () => _handleProfileClick(context),
                     )
-                ),
-                Positioned(
-                  left: 50,
-                  child: badges.Badge(
+                  ),
+                  Positioned(
+                    left: 50,
+                    child: badges.Badge(
                       badgeStyle: const badges.BadgeStyle(
-                          badgeColor: Color(0xFFF2E4D7)
+                        badgeColor: Color(0xFFF2E4D7)
                       ),
-                      badgeContent: const Text("0"),
+                      badgeContent: Text('$cartItems'),
                       child: IconButton(
                         icon: const Icon(
                             Icons.shopping_cart_outlined
                         ),
                         hoverColor: const Color(0xFFF2E4D7),
-                        onPressed: () => {},
+                        onPressed: addToCart,
                       )
+                    ),
                   ),
-                ),
-                const Align(
+                  const Align(
                     alignment: Alignment.bottomCenter,
                     child: Divider(
                       thickness: 5,
                       height: 1,
                       color: Color(0xFFF2E4D7),
                     )
+                  ),
+                ],
+              ),
+            ),
+            // Expanded(
+            NavigationBar(
+              height: 20,
+              destinations: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    // backgroundColor: const Color(0xFFFEF9F6),
+                    // disabledBackgroundColor: const Color(0xFFFEF9F6),
+                    // shadowColor: const Color(0xFFFEF9F6),
+                    foregroundColor: const Color(0xFFAD7765),
+                    surfaceTintColor: const Color(0xFFFEF9F6),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  onPressed: () {
+                    print("About");
+                  },
+                  child: const Text("من نحن")
                 ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: const Color(0xFFAD7765),
+                    surfaceTintColor: const Color(0xFFFEF9F6),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  onPressed: () {
+                    print("Important Links");
+                  },
+                  child: const Text("روابط مهمة")
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: const Color(0xFFAD7765),
+                    surfaceTintColor: const Color(0xFFFEF9F6),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(0),
+                    ),
+                  ),
+                  onPressed: () {
+                    print("Contact Us");
+                  },
+                  child: const Text("تواصل معنا")
+                ),
+
               ],
-            )
+            ),
+            // )
+          ]
         )
+      )
     );
   }
+
 }
