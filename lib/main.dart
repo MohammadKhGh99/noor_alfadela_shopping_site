@@ -281,6 +281,7 @@ class _SharedAppBarState extends State<SharedAppBar> {
                 alignment: Alignment.center,
                 children: [
                   IconButton(
+                    tooltip: "الصفحة الرئيسية",
                     hoverColor: const Color(0xFFFEF9F6),
                     highlightColor: const Color(0xFFFEF9F6),
                     onPressed: () => _handleLogoClick(context),
@@ -294,6 +295,7 @@ class _SharedAppBarState extends State<SharedAppBar> {
                   Positioned(
                     right: 50,
                     child: IconButton(
+                      tooltip: "الصفحة الشخصية",
                       icon: const Icon(Icons.person_outline_rounded),
                       color: const Color(0xFFAD7765),
                       // TODO - make the "profile" thing
@@ -301,13 +303,51 @@ class _SharedAppBarState extends State<SharedAppBar> {
                     )
                   ),
                   Positioned(
-                    left: 50,
+                    left: 20,
+                    child: PopupMenuButton<String>(
+                      tooltip: "القائمة",
+                      offset: Offset(10, 20),
+                      color: const Color(0xFFF2E4D7),
+                      icon: const Icon(
+                        Icons.menu,
+                        color: Color(0xFFAD7765),
+                      ),
+                      onSelected: (value) {
+                        if (value == 'تواصل معنا') {
+                          print("تواصل معنا");
+                        } else if (value == 'من نحن') {
+                          print("من نحن");
+                        } else if (value == 'روابط مهمة') {
+                          print("روابط مهمة");
+                        }
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          const PopupMenuItem<String>(
+                          value: 'روابط مهمة',
+                          child: Text('روابط مهمة'),
+                          ),
+                          const PopupMenuItem<String>(
+                          value: 'من نحن',
+                          child: Text('من نحن'),
+                          ),
+                          const PopupMenuItem<String>(
+                          value: 'تواصل معنا',
+                          child: Text('تواصل معنا'),
+                          ),
+                        ];
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    left: 100,
                     child: badges.Badge(
                       badgeStyle: const badges.BadgeStyle(
                         badgeColor: Color(0xFFF2E4D7)
                       ),
                       badgeContent: Text(widget.cartItems.toString()),
                       child: IconButton(
+                        tooltip: "العربة",
                         icon: const Icon(Icons.shopping_cart_outlined),
                         color: const Color(0xFFAD7765),
                         onPressed: () {
@@ -316,6 +356,7 @@ class _SharedAppBarState extends State<SharedAppBar> {
                       )
                     ),
                   ),
+
                   const Align(
                     alignment: Alignment.bottomCenter,
                     child: Divider(
@@ -328,32 +369,32 @@ class _SharedAppBarState extends State<SharedAppBar> {
               ),
             ),
             // Expanded(
-            NavigationBar(
-              height: 20,
-              destinations: [
-                ElevatedButton(
-                  style: rectangularButtonStyle,
-                  onPressed: () {
-                    print("About");
-                  },
-                  child: const Text("من نحن")
-                ),
-                ElevatedButton(
-                  style: rectangularButtonStyle,
-                  onPressed: () {
-                    print("Important Links");
-                  },
-                  child: const Text("روابط مهمة")
-                ),
-                ElevatedButton(
-                  style: rectangularButtonStyle,
-                  onPressed: () {
-                    print("Contact Us");
-                  },
-                  child: const Text("تواصل معنا")
-                ),
-              ],
-            ),
+            // NavigationBar(
+            //   height: 20,
+            //   destinations: [
+            //     ElevatedButton(
+            //       style: rectangularButtonStyle,
+            //       onPressed: () {
+            //         print("About");
+            //       },
+            //       child: const Text("من نحن")
+            //     ),
+            //     ElevatedButton(
+            //       style: rectangularButtonStyle,
+            //       onPressed: () {
+            //         print("Important Links");
+            //       },
+            //       child: const Text("روابط مهمة")
+            //     ),
+            //     ElevatedButton(
+            //       style: rectangularButtonStyle,
+            //       onPressed: () {
+            //         print("Contact Us");
+            //       },
+            //       child: const Text("تواصل معنا")
+            //     ),
+            //   ],
+            // ),
           ]
         )
       )
@@ -373,26 +414,52 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  Size size = const Size(0, 0);
+  double cardWidth = 280;
+  double cardHeight = 280;
+
+  int itemsInColumn = 0;
+
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    print(size);
+
+    if (size.width >= 500 && size.width <= 695){
+      itemsInColumn = 2;
+    }
+    else if (size.width >= 696 && size.width <= 890){
+      itemsInColumn = 3;
+    }
+    else if (size.width >= 891 && size.width <= 1080){
+      itemsInColumn = 4;
+    }
+    else if (size.width >= 1081){
+      itemsInColumn = 5;
+    }
+    // itemsInColumn = ((size.width - 30) / cardWidth).floor();
+    // double columnsSpacing = (width - (itemsInColumn * 295)) / 2;
+
     return Scaffold(
       backgroundColor: const Color(0xFFFEF9F6),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100.0),
         child: SharedAppBar(cartItems: widget.cartItems,)
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(20),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4, // Number of columns in the grid
-          crossAxisSpacing: 20.0, // Spacing between columns
-          mainAxisSpacing: 20.0, // Spacing between rows
+      body:
+        GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: itemsInColumn, // Number of columns in the grid
+            crossAxisSpacing: 16, // Spacing between columns
+            mainAxisSpacing: 16, // Spacing between rows
+          ),
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            return _buildItemCard(products[index] as Product);
+          },
         ),
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          return _buildItemCard(products[index] as Product);
-        },
-      ),
     );
   }
 
@@ -407,11 +474,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildItemCard(Product product) {
+    // itemsInColumn
+    cardWidth = (size.width - ((itemsInColumn + 1) * 16)) / itemsInColumn;
+    cardHeight = cardWidth - 20;
+
     return ElevatedButton(
       onPressed: () {
         _handleCardClick(product);
       },
       style: ElevatedButton.styleFrom(
+        fixedSize: Size(cardWidth, cardWidth),
         foregroundColor: const Color(0xFFAD7765),
         surfaceTintColor: const Color(0xFFFEF9F6),
         shape: RoundedRectangleBorder(
@@ -421,39 +493,45 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 4,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisSize: MainAxisSize.min,
+        // crossAxisAlignment: CrossAxisAlignment.stretch,
+        // mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          const SizedBox(height: 2),
           Image.asset(
             product.imageUrl,
-            width: 150.0,
-            height: 150.0,
-            fit: BoxFit.cover,
+            semanticLabel: product.name,
+            width: (3 * cardWidth) / 4,
+            height: (3 * cardHeight) / 4,
+            // fit: BoxFit.cover,
+            // filterQuality: FilterQuality.high,
           ),
           Text(
             product.name,
-            style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 14.0),
           ),
           const Divider(),
           Text(
             product.price,
+            // textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 14.0),
           ),
-          Row(
-            children: [
-              ElevatedButton(
-                  style: elevatedButtonStyle,
-                  onPressed: () {
-                    print("Buy Now");
-                  },
-                  child: const Text("اشتر الآن")
-              ),
-              const SizedBox(width: 100,),
-              IconButton(
-                onPressed: addToCart,
-                icon: const Icon(Icons.add_shopping_cart),
-              ),
-            ],
-          )
+          // Row(
+          //   children: [
+          //     ElevatedButton(
+          //         style: elevatedButtonStyle,
+          //         onPressed: () {
+          //           print("Buy Now");
+          //         },
+          //         child: const Text("اشتر الآن")
+          //     ),
+          //     const SizedBox(width: 100,),
+          //     IconButton(
+          //       onPressed: addToCart,
+          //       icon: const Icon(Icons.add_shopping_cart),
+          //     ),
+          //   ],
+          // )
         ],
       ),
     );
