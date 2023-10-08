@@ -420,6 +420,10 @@ class _MyHomePageState extends State<MyHomePage> {
   double cardHeight = 280;
 
   int itemsInColumn = 0;
+  bool isSizeHovered = false;
+  bool isPrivacyHovered = false;
+  bool isReturnsHovered = false;
+  bool isComplaintsHovered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -470,7 +474,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Container(
               height: 200,
-              color: const Color(0xFFAD7765),
+              color: const Color(0xFFD2B1A6),
               child: Stack(
                 children: [
                   Positioned(
@@ -505,15 +509,74 @@ class _MyHomePageState extends State<MyHomePage> {
                           width: size.width / 4,
                         ),
                         const SizedBox(height: 15,),
-                        const Text("طريقة إختيار المقاس"),
+                        InkWell(
+                          onHover: (isHovered) {
+                            setState(() {
+                              isSizeHovered = isHovered;
+                            });
+                          },
+                          onTap: () => print("How To Choose Size"),
+                          child: Text("طريقة إختيار المقاس",
+                            style: TextStyle(
+                            color: isSizeHovered ? Colors.white : Colors.black,
+                            decoration: isSizeHovered ? TextDecoration.underline
+                                : null,
+                            decorationColor: isSizeHovered ? Colors.white : Colors.black,
+                            ),
+                          )
+                        ),
                         const SizedBox(height: 10,),
-                        const Text("سياسة الخصوصية"),
+                        InkWell(
+                          onHover: (isHovered) {
+                            setState(() {
+                              isPrivacyHovered = isHovered;
+                            });
+                          },
+                          onTap: () => print("Privacy Policy"),
+                          child: Text("سياسة الخصوصية",
+                            style: TextStyle(
+                              color: isPrivacyHovered ? Colors.white : Colors.black,
+                              decoration: isPrivacyHovered ? TextDecoration.underline
+                                  : null,
+                              decorationColor: isPrivacyHovered ? Colors.white : Colors.black,),
+                          ),
+                        ),
                         const SizedBox(height: 10,),
-                        const Text("سياسة الاستبدال والاسترجاع"),
+                        InkWell(
+                          onHover: (isHovered) {
+                            setState(() {
+                              isReturnsHovered = isHovered;
+                            });
+                          },
+                          onTap: () => print("Return and Replacements"),
+                          child: Text("سياسة الاستبدال والاسترجاع",
+                            style: TextStyle(
+                              color: isReturnsHovered ? Colors.white : Colors.black,
+                              decoration: isReturnsHovered ? TextDecoration.underline
+                                  : null,
+                              decorationColor: isReturnsHovered ? Colors.white : Colors.black,
+                            ),
+                          ),
+                        ),
                         const SizedBox(height: 10,),
-                        const Text("الشكاوى والاقتراحات"),
-                        const SizedBox(height: 10,),
-                        const Text("عروض الخصومات"),
+                        InkWell(
+                          onHover: (isHovered) {
+                            setState(() {
+                              isComplaintsHovered = isHovered;
+                            });
+                          },
+                          onTap: () => print("Compalints"),
+                          child: Text("الشكاوى والاقتراحات",
+                            style: TextStyle(
+                              color: isComplaintsHovered ? Colors.white : Colors.black,
+                              decoration: isComplaintsHovered ? TextDecoration.underline
+                                  : null,
+                              decorationColor: isComplaintsHovered ? Colors.white : Colors.black,
+                            ),
+                          ),
+                        ),
+                        // const SizedBox(height: 10,),
+                        // const Text("عروض الخصومات"),
                       ],
                     ),
                   ),
@@ -534,24 +597,32 @@ class _MyHomePageState extends State<MyHomePage> {
                         Row(
                           children: [
                             IconButton(
+                              // tooltip: "إنستاغرام",
+                              hoverColor: Colors.white,
                               onPressed: () {
                                 print("Instagram");
                               },
                               icon: const Icon(awesome.FontAwesomeIcons.instagram)
                             ),
                             IconButton(
+                              // tooltip: "فيسبوك",
+                              hoverColor: Colors.white,
                               onPressed: () {
                                 print("Facebook");
                               },
                               icon: const Icon(awesome.FontAwesomeIcons.facebook)
                             ),
                             IconButton(
+                              // tooltip: "واتساب",
+                              hoverColor: Colors.white,
                               onPressed: () {
                                 print("Whatsapp");
                               },
                               icon: const Icon(awesome.FontAwesomeIcons.whatsapp)
                             ),
                             IconButton(
+                              // tooltip: "بريد إلكتروني",
+                              hoverColor: Colors.white,
                               onPressed: () {
                                 print("Email");
                               },
