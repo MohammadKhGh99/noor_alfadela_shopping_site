@@ -302,45 +302,45 @@ class _SharedAppBarState extends State<SharedAppBar> {
                       onPressed: () => _handleProfileClick(context),
                     )
                   ),
+                  // Positioned(
+                  //   left: 20,
+                  //   child: PopupMenuButton<String>(
+                  //     tooltip: "القائمة",
+                  //     offset: Offset(10, 20),
+                  //     color: const Color(0xFFF2E4D7),
+                  //     icon: const Icon(
+                  //       Icons.menu,
+                  //       color: Color(0xFFAD7765),
+                  //     ),
+                  //     onSelected: (value) {
+                  //       if (value == 'تواصل معنا') {
+                  //         print("تواصل معنا");
+                  //       } else if (value == 'من نحن') {
+                  //         print("من نحن");
+                  //       } else if (value == 'روابط مهمة') {
+                  //         print("روابط مهمة");
+                  //       }
+                  //     },
+                  //     itemBuilder: (BuildContext context) {
+                  //       return [
+                  //         const PopupMenuItem<String>(
+                  //         value: 'روابط مهمة',
+                  //         child: Text('روابط مهمة'),
+                  //         ),
+                  //         const PopupMenuItem<String>(
+                  //         value: 'من نحن',
+                  //         child: Text('من نحن'),
+                  //         ),
+                  //         const PopupMenuItem<String>(
+                  //         value: 'تواصل معنا',
+                  //         child: Text('تواصل معنا'),
+                  //         ),
+                  //       ];
+                  //     },
+                  //   ),
+                  // ),
                   Positioned(
-                    left: 20,
-                    child: PopupMenuButton<String>(
-                      tooltip: "القائمة",
-                      offset: Offset(10, 20),
-                      color: const Color(0xFFF2E4D7),
-                      icon: const Icon(
-                        Icons.menu,
-                        color: Color(0xFFAD7765),
-                      ),
-                      onSelected: (value) {
-                        if (value == 'تواصل معنا') {
-                          print("تواصل معنا");
-                        } else if (value == 'من نحن') {
-                          print("من نحن");
-                        } else if (value == 'روابط مهمة') {
-                          print("روابط مهمة");
-                        }
-                      },
-                      itemBuilder: (BuildContext context) {
-                        return [
-                          const PopupMenuItem<String>(
-                          value: 'روابط مهمة',
-                          child: Text('روابط مهمة'),
-                          ),
-                          const PopupMenuItem<String>(
-                          value: 'من نحن',
-                          child: Text('من نحن'),
-                          ),
-                          const PopupMenuItem<String>(
-                          value: 'تواصل معنا',
-                          child: Text('تواصل معنا'),
-                          ),
-                        ];
-                      },
-                    ),
-                  ),
-                  Positioned(
-                    left: 100,
+                    left: 50,
                     child: badges.Badge(
                       badgeStyle: const badges.BadgeStyle(
                         badgeColor: Color(0xFFF2E4D7)
@@ -447,19 +447,139 @@ class _MyHomePageState extends State<MyHomePage> {
         preferredSize: const Size.fromHeight(100.0),
         child: SharedAppBar(cartItems: widget.cartItems,)
       ),
-      body:
-        GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: itemsInColumn, // Number of columns in the grid
-            crossAxisSpacing: 16, // Spacing between columns
-            mainAxisSpacing: 16, // Spacing between rows
-          ),
-          itemCount: products.length,
-          itemBuilder: (context, index) {
-            return _buildItemCard(products[index] as Product);
-          },
-        ),
+      body: ListView(
+        // crossAxisAlignment: CrossAxisAlignment.stretch,
+        // mainAxisSize: MainAxisSize.min,
+
+        children: [
+          // Expanded(
+          //   child:
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.all(16),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: itemsInColumn, // Number of columns in the grid
+                crossAxisSpacing: 16, // Spacing between columns
+                mainAxisSpacing: 16, // Spacing between rows
+              ),
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                return _buildItemCard(products[index] as Product);
+              },
+            ),
+            Container(
+              height: 200,
+              color: const Color(0xFFAD7765),
+              child: Stack(
+                children: [
+                  Positioned(
+                    right: 20,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 5,),
+                        const Text("من نحن"),
+                        const SizedBox(height: 10,),
+                        Container(
+                          color: Colors.white,
+                          height: 1,
+                          width: size.width / 4,
+                        ),
+                        const SizedBox(height: 15,),
+                        const Text("نور الفضيلة موقع أزياء شرعية"),
+                      ],
+                    ),
+                  ),
+                  // const SizedBox(width: 220),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    // left: (3 * size.width) / 8,
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(height: 5,),
+                        const Text("روابط مهمة"),
+                        const SizedBox(height: 10,),
+                        Container(
+                          color: Colors.white,
+                          height: 1,
+                          width: size.width / 4,
+                        ),
+                        const SizedBox(height: 15,),
+                        const Text("طريقة إختيار المقاس"),
+                        const SizedBox(height: 10,),
+                        const Text("سياسة الخصوصية"),
+                        const SizedBox(height: 10,),
+                        const Text("سياسة الاستبدال والاسترجاع"),
+                        const SizedBox(height: 10,),
+                        const Text("الشكاوى والاقتراحات"),
+                        const SizedBox(height: 10,),
+                        const Text("عروض الخصومات"),
+                      ],
+                    ),
+                  ),
+                  // const SizedBox(width: 220),
+                  Positioned(
+                    left: 20,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 5,),
+                        const Text("تواصل معنا"),
+                        const SizedBox(height: 5,),
+                        Container(
+                          color: Colors.white,
+                          height: 1,
+                          width: size.width / 4,
+                        ),
+                        const SizedBox(height: 5,),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                print("Instagram");
+                              },
+                              icon: const Icon(awesome.FontAwesomeIcons.instagram)
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                print("Facebook");
+                              },
+                              icon: const Icon(awesome.FontAwesomeIcons.facebook)
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                print("Whatsapp");
+                              },
+                              icon: const Icon(awesome.FontAwesomeIcons.whatsapp)
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                print("Email");
+                              },
+                              icon: const Icon(Icons.email_outlined)
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+            // const SizedBox(height: 5,),
+            Container(
+              padding: const EdgeInsets.only(bottom: 5, top: 5, right: 5),
+              color: Colors.white,
+              child: const Text("2023 | صنع بواسطة Mohammad Ghanayem"),
+            ),
+            // const SizedBox(height: 5,),
+
+          // Container(
+          //   color: Colors.green,
+          //   height: 100,
+          //   child: const Text("Bottom Widget"),
+          // ),
+        ],
+      ),
     );
   }
 
